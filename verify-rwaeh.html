@@ -1,11 +1,210 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>التحقق من أصالة المنتج | روائح الحرمين</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التحقق من أصالة المنتج | روائح الحرمين</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tahoma',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+color:#fff;
+}
+
+.card{
+width:100%;
+max-width:450px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:24px;
+padding:25px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+.logo{
+width:180px;
+margin:0 auto 20px;
+display:block;
+}
+
+.check{
+width:90px;
+height:90px;
+background:#16a34a;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:42px;
+margin:15px auto;
+box-shadow:0 0 25px rgba(34,197,94,.6);
+}
+
+.title{
+font-size:24px;
+font-weight:700;
+margin-bottom:15px;
+}
+
+.product-img{
+width:100%;
+border-radius:18px;
+margin:15px 0;
+display:none;
+}
+
+.info{
+background:rgba(255,255,255,.08);
+padding:12px;
+border-radius:12px;
+margin-top:10px;
+font-size:15px;
+}
+
+.label{
+color:#d4af37;
+font-weight:bold;
+}
+
+.warning{
+margin-top:18px;
+padding:12px;
+border-radius:12px;
+background:#dc2626;
+display:none;
+}
+
+.error{
+display:none;
+font-size:20px;
+color:#ff6b6b;
+padding:25px;
+}
+
+.loading{
+font-size:18px;
+}
+</style>
 </head>
+
 <body>
-  <h1>روائح الحرمين</h1>
-  <p>النسخة V2 تعمل بنجاح</p>
+
+<div class="card">
+
+<img src="logo.rwaeh.png" class="logo">
+
+<div id="loading" class="loading">
+جاري التحقق...
+</div>
+
+<div id="content" style="display:none;">
+
+<div class="check">✓</div>
+
+<div class="title">
+تم التحقق من أصالة المنتج
+</div>
+
+<img id="productImage" class="product-img">
+
+<div class="info">
+<span class="label">المنتج:</span>
+<span id="product"></span>
+</div>
+
+<div class="info">
+<span class="label">رقم الدفعة:</span>
+<span id="batch"></span>
+</div>
+
+<div class="info">
+<span class="label">الحالة:</span>
+<span id="status"></span>
+</div>
+
+<div class="info">
+<span class="label">عدد مرات التحقق:</span>
+<span id="scanCount"></span>
+</div>
+
+<div id="warning" class="warning">
+⚠️ تم التحقق من هذا المنتج مرات عديدة، يرجى التأكد من مصدر الشراء.
+</div>
+
+</div>
+
+<div id="error" class="error">
+❌ المنتج غير موجود أو الكود غير صحيح
+</div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbym0t0CHSDg4AXoXlZjjZkfF1PmEMl59Qvw2ERohGJ0BzJ0vazpQfQgG8uJk9EcHuaJNA/exec";
+
+const id = new URLSearchParams(window.location.search).get("id");
+
+if(id){
+
+fetch(API_URL + "?id=" + encodeURIComponent(id))
+.then(response => response.json())
+.then(data=>{
+
+document.getElementById("loading").style.display="none";
+
+if(data.found){
+
+document.getElementById("content").style.display="block";
+
+document.getElementById("product").textContent=data.product;
+document.getElementById("batch").textContent=data.batch;
+document.getElementById("status").textContent=data.status;
+document.getElementById("scanCount").textContent=data.scanCount;
+
+if(data.imageUrl){
+
+const img=document.getElementById("productImage");
+img.src=data.imageUrl;
+img.style.display="block";
+
+}
+
+if(data.warning){
+document.getElementById("warning").style.display="block";
+}
+
+}else{
+
+document.getElementById("error").style.display="block";
+
+}
+
+});
+
+}else{
+
+document.getElementById("loading").style.display="none";
+document.getElementById("error").style.display="block";
+
+}
+
+</script>
+
 </body>
 </html>
