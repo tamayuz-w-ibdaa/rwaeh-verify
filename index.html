@@ -532,8 +532,21 @@ document.getElementById("verifyTitle").innerHTML =
 
 function showInvalid(){
 
-
-
 document.getElementById("verifyTitle").innerHTML =
+"❌ المنتج غير أصلي أو الكود غير موجود";
 
-"❌ المنتج غير أصلي أو الكود
+document.getElementById("statusText").innerHTML =
+'<span class="status-bad">غير صالح</span>';
+
+document.getElementById("productName").innerText = "-";
+
+document.getElementById("batch").innerText = "-";
+
+}
+
+
+verifyCode();
+
+</script>
+</body>
+</html>
