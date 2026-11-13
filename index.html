@@ -1,61 +1,3 @@
-شكرًا لك على مشاركة الكود! كود جيد وهيكله واضح. لقد قمت بتحليل الكود، وهذا ملخص مع بعض الملاحظات والتحسينات المقترحة:
-
-## ✅ نقاط القوة في الكود:
-- استخدام CSV مباشر من Google Sheets (حل بسيط ومجاني)
-- دعم اللغة العربية والإنجليزية
-- تنسيق جميل وتحذيرات واضحة
-- التعامل مع حالة `ACTIVE` و `BLOCKED`
-- عرض تاريخ التحقق
-
-## ⚠️ ملاحظات وأخطاء تحتاج تعديل:
-
-### 1. خطأ في هيكل HTML
-في الكود لديك:
-```html
-<div class="note"> ... </div>
-```
-هذا الـ `div` موضوع **داخل الـ `<table>`** (قبل إغلاقه)، وهذا غير صحيح. يجب إغلاق الـ `table` ثم وضع الـ `div`.
-
-**تعديل:** انقل `<div class="note"> ... </div>` بعد إغلاق `</table>` وقبل إغلاق `</div>` الرئيسي.
-
-### 2. مشكلة في CSS (تعليق غير صحيح)
-يوجد سطر:
-```css
-background-color: #d4edda;
-border: 2px soli  }
-```
-هذا خطأ في التعليق وإغلاق القوس. وكذلك السطر `border: 2px solid #ffc107;` ناقص. يجب تصحيحها.
-
-### 3. معالجة CSV بسيطة (قد تسبب مشاكل)
-استخدام `split(",")` مباشرة سيفشل إذا كانت الخلايا تحتوي على فواصل (مثل "معطر الروضة الشريفة 250 مل" لا تحتوي، لكن للاحتياط الأفضل استخدام مكتبة CSV أو تحويلها إلى JSON.
-
-### 4. رابط CSV عام
-رابط التصدير `export?format=csv` متاح للعامة. هذا قد يكون مقبولاً، لكن إذا زادت الزيارات قد تواجه حداً من Google. الأفضل استخدام **Google Apps Script (Web App)** كما اقترحت سابقاً لأنه أسرع وأكثر أماناً.
-
-### 5. استخدام query parameter `?id=` بدلاً من `?code=`
-أنت تستخدم `?id=` بينما في خطتك كنت تريد `?code=`. يمكنك استخدام أي اسم تريده، لكن احرص على التوافق مع روابط QR التي ستصدرها.
-
-## 🚀 اقتراحات للتحسين:
-
-### أ. تحويل CSV إلى JSON باستخدام Apps Script (الأفضل)
-بدلاً من جلب الملف CSV كاملاً في كل مرة، استخدم Web App يرجع JSON للعنصر المطلوب فقط. هذا أسرع وأقل استهلاكاً للبيانات.
-
-### ب. استخدام مكتبة Papa Parse لتحليل CSV
-إذا أردت البقاء على CSV، أضف مكتبة Papa Parse لجعل التحليل دقيقاً.
-
-### ج. إضافة ربط بالدومين
-تأكد من أن صفحة `index.html` مستضافة على GitHub Pages، وأن الدومين `rwaeh.com` موجه إليه (CNAME record).
-
-### د. إضافة رسالة للمنتج "غير موجود"
-لديك دالة `showInvalid()` لكنك لم تستخدمها بشكل صحيح في حالة عدم وجود الكود. الكود الحالي يستدعي `showInvalid()` عند عدم وجود بيانات، وهذا جيد.
-
-## 🔄 تعديل بسيط مباشر للكود (لتصحيح الأخطاء الظاهرية):
-
-سأقدم لك نسخة معدلة من الكود مع إصلاح الأخطاء وتحسينات طفيفة. يمكنك نسخها واستبدال الكود الحالي.
-
-### كود HTML المعدل (مع إصلاح المشاكل):
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -65,145 +7,533 @@ border: 2px soli  }
 <title>التحقق من أصالة المنتج | روائح الحرمين</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Tahoma, Arial, sans-serif;
+
+
+
+\*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Tahoma,Arial,sans-serif;
+
 }
 
-body {
-  background: #f6f7f8;
-  padding: 20px;
+
+
+body{
+
+background:#f6f7f8;
+
+padding:20px;
+
 }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+
+
+.container{
+
+max-width:900px;
+
+margin:auto;
+
+background:white;
+
+border-radius:20px;
+
+padding:40px;
+
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+
 }
 
-.logo {
-  display: block;
-  margin: auto;
-  width: 160px;
-  margin-bottom: 20px;
+
+
+.logo{
+
+display:block;
+
+margin:auto;
+
+width:160px;
+
+margin-bottom:20px;
+
 }
 
-.verify-box {
-  background: #edf9f0;
-  border: 2px solid #cdeed8;
-  border-radius: 15px;
-  padding: 25px;
-  text-align: center;
-  margin-bottom: 25px;
+
+
+.verify-box{
+
+background:#edf9f0;
+
+border:2px solid #cdeed8;
+
+border-radius:15px;
+
+padding:25px;
+
+text-align:center;
+
+margin-bottom:25px;
+
 }
 
-.verify-title {
-  font-size: 34px;
-  font-weight: bold;
-  color: #0b8f48;
+
+
+.verify-title{
+
+font-size:34px;
+
+font-weight:bold;
+
+color:#0b8f48;
+
 }
 
-.verify-sub {
-  margin-top: 10px;
-  color: #777;
-  font-size: 18px;
+
+
+.verify-sub{
+
+margin-top:10px;
+
+color:#777;
+
+font-size:18px;
+
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
 }
 
-td {
-  padding: 15px;
-  border: 1px solid #e5e5e5;
+
+
+td{
+
+padding:15px;
+
+border:1px solid #e5e5e5;
+
 }
 
-.label {
-  background: #fafafa;
-  font-weight: bold;
-  width: 35%;
+
+
+.label{
+
+background:#fafafa;
+
+font-weight:bold;
+
+width:35%;
+
 }
 
-.note {
-  margin-top: 25px;
-  padding: 20px;
-  background: #fafafa;
-  border-radius: 12px;
-  text-align: center;
-  line-height: 2;
-  color: #555;
+
+
+.note{
+
+margin-top:25px;
+
+padding:20px;
+
+background:#fafafa;
+
+border-radius:12px;
+
+text-align:center;
+
+line-height:2;
+
+color:#555;
+
 }
 
-.footer {
-  margin-top: 25px;
-  text-align: center;
-  color: #888;
+
+
+.footer{
+
+margin-top:25px;
+
+text-align:center;
+
+color:#888;
+
 }
 
-.status-ok {
-  color: #0b8f48;
-  font-weight: bold;
+
+
+.status-ok{
+
+color:#0b8f48;
+
+font-weight:bold;
+
 }
 
-.status-bad {
-  color: #d32f2f;
-  font-weight: bold;
+
+
+.status-bad{
+
+color:#d32f2f;
+
+font-weight:bold;
+
 }
-</style>
+
+
+
 
 </head>
 <body>
 
 <div class="container">
 
-<h1 style="text-align:center; color:#0f5132; font-size:38px; margin-bottom:10px;">
-  روائح الحرمين
+<h1 style="
+text-align:center;
+color:#0f5132;
+font-size:38px;
+margin-bottom:10px;
+">
+روائح الحرمين
 </h1>
 
-<p style="text-align:center; color:#777; margin-bottom:25px; font-size:18px;">
-  التحقق من أصالة منتجات روائح الحرمين
+<p style="
+text-align:center;
+color:#777;
+margin-bottom:25px;
+font-size:18px;
+">
+التحقق من أصالة منتجات روائح الحرمين
 </p>
 
 <div class="verify-box">
-  <div id="verifyTitle" class="verify-title">
-    جاري التحقق...<br>Verifying Product...
-  </div>
-  <div class="verify-sub">
-    التحقق من أصالة منتجات روائح الحرمين<br>
-    Rwaeh Al Haramain Product Verification
-  </div>
+
+<div id="verifyTitle" class="verify-title">
+جاري التحقق...
+<br>
+Verifying Product...
+</div>
+
+<div class="verify-sub">
+التحقق من أصالة منتجات روائح الحرمين
+<br>
+Rwaeh Al Haramain Product Verification
+</div>
+
 </div>
 
 <table>
-  <tr>
-    <td class="label">اسم المنتج<br>Product Name</td>
-    <td id="productName">-</td>
-  </tr>
-  <tr>
-    <td class="label">رقم التحقق<br>Verification Code</td>
-    <td id="productCode">-</td>
-  </tr>
-  <tr>
-    <td class="label">رقم التشغيلة<br>Batch Number</td>
-    <td id="batch">-</td>
-  </tr>
-  <tr>
-    <td class="label">الحالة<br>Status</td>
-    <td id="statusText">-</td>
-  </tr>
-  <tr>
-    <td class="label">تاريخ التحقق<br>Verification Date</td>
-    <td id="verifyDate">-</td>
-  </tr>
-</table>
+
+<tr>
+<td class="label">
+اسم المنتج<br>
+Product Name
+</td>
+<td id="productName">-</td>
+</tr>
+
+<tr>
+<td class="label">
+رقم التحقق<br>
+Verification Code
+</td>
+<td id="productCode">-</td>
+</tr>
+
+<tr>
+<td class="label">
+رقم التشغيلة<br>
+Batch Number
+</td>
+<td id="batch">-</td>
+</tr>
+
+<tr>
+<td class="label">
+الحالة<br>
+Status
+</td>
+<td id="statusText">-</td>
+</tr>
+
+<tr>
+<td class="label">
+تاريخ التحقق<br>
+Verification Date
+</td>
+<td id="verifyDate">-</td>
+</tr>
 
 <div class="note">
-  تم التحقق من هذا المنتج عبر النظام الرسمي لشركة روائح الحرمين.<br><br>
-  This product has been verified through the official Rw
+
+تم التحقق من هذا المنتج عبر النظام الرسمي لشركة روائح الحرمين.
+
+<br><br>
+
+This product has been verified through the official Rwaeh Al Haramain verification system.
+
+<br><br>
+
+يرجى التأكد من مطابقة رقم التحقق الموجود على العبوة مع الرقم الظاهر في هذه الصفحة.
+
+<br><br>
+
+Please verify that the code printed on the package matches the code displayed on this page.
+
+</div>
+
+<div style="text-align:center;margin-top:25px;">
+
+<a href="https://rwaeh.com"
+style="
+display:inline-block;
+background:#0f5132;
+color:white;
+padding:16px 35px;
+border-radius:10px;
+text-decoration:none;
+font-size:18px;
+font-weight:bold;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+">
+
+🏠 زيارة الموقع الرسمي
+<br>
+Official Website
+
+</a>
+
+</div>
+
+<div class="footer">
+
+<br>
+
+روائح الحرمين<br>
+RWAEH.COM
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+
+
+const SHEET\_CSV =
+
+"https://docs.google.com/spreadsheets/d/1XoncKTIGuDLASZ5pH4dcea0OveKThyWuU4V3ShgUCug/export?format=csv";
+
+
+
+const params = new URLSearchParams(window.location.search);
+
+const id = params.get("id");
+
+
+
+document.getElementById("productCode").innerText =
+
+id || "-";
+
+
+
+document.getElementById("verifyDate").innerText =
+
+new Date().toLocaleString('ar-SA');
+
+
+
+async function verifyCode(){
+
+
+
+if(!id){
+
+showInvalid();
+
+return;
+
+}
+
+
+
+try{
+
+
+
+const response = await fetch(SHEET\_CSV);
+
+const csv = await response.text();
+
+
+
+const rows = csv.split("\\n");
+
+
+
+let found = null;
+
+
+
+for(let i=1;i<rows.length;i++){
+
+
+
+let cols = rows\[i]
+
+.replace(/\\r/g,"")
+
+.replace(/"/g,"")
+
+.split(",");
+
+
+
+if(cols.length >= 4){
+
+
+
+let code = cols\[0].trim();
+
+
+
+if(code === id){
+
+
+
+found = cols;
+
+break;
+
+
+
+}
+
+
+
+}
+
+
+
+}
+
+
+
+if(found){
+
+
+
+let product = found\[1].trim();
+
+let batch = found\[2].trim();
+
+let status = found\[3].trim();
+
+
+
+document.getElementById("productName").innerText =
+
+product;
+
+
+
+document.getElementById("batch").innerText =
+
+batch;
+
+
+
+if(status.toLowerCase() === "active"){
+
+
+
+document.getElementById("verifyTitle").innerHTML =
+
+"✅ شهادة أصالة المنتج<br>Product Authenticity Certificate";
+
+
+
+document.getElementById("statusText").innerHTML =
+
+'<span class="status-ok">نشط ومعتمد<br>Active \& Certified</span>';
+
+
+
+}
+
+else{
+
+
+
+document.getElementById("verifyTitle").innerHTML =
+
+"⚠️ تم إيقاف هذا الكود<br>Verification Code Blocked";
+
+
+
+document.getElementById("statusText").innerHTML =
+
+'<span class="status-bad">موقوف<br>Blocked</span>';
+
+
+
+}
+
+
+
+}
+
+else{
+
+
+
+showInvalid();
+
+
+
+}
+
+
+
+}
+
+catch(error){
+
+
+
+document.getElementById("verifyTitle").innerHTML =
+
+"⚠️ تعذر الاتصال بقاعدة البيانات";
+
+
+
+}
+
+
+
+}
+
+
+
+function showInvalid(){
+
+
+
+document.getElementById("verifyTitle").innerHTML =
+
+"❌ المنتج غير أصلي أو الكود
