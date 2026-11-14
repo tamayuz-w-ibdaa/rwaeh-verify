@@ -160,7 +160,7 @@ font-size:18px;
 
 <div id="ratingMessage" style="margin-top:10px;"></div>
 <div id="ratingCount" style="margin-top:10px;color:#d4af37;">
-عدد التقييمات: 0
+عدد التقييمات: 112
 </div>
 
 </div>
@@ -224,8 +224,25 @@ document.getElementById("error").style.display="block";
 }
 function rate(stars){
 
+const productName =
+document.getElementById("product").textContent;
+
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+product: productName,
+rating: stars
+})
+})
+.then(response => response.json())
+.then(data => {
+
 document.getElementById("ratingMessage").innerHTML =
 "شكراً لتقييمك ⭐ " + stars;
+
+});
+
+}
 
 }
 </script>
