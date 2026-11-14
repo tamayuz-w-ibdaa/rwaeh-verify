@@ -144,7 +144,23 @@ font-size:18px;
 <div id="warning" class="warning">
 ⚠️ تم التحقق من هذا المنتج مرات عديدة، يرجى التأكد من مصدر الشراء.
 </div>
+<div class="info" style="margin-top:15px;">
 
+<span class="label">قيّم المنتج:</span>
+
+<div id="rating" style="font-size:32px;margin-top:10px;">
+
+<span onclick="rate(1)">☆</span>
+<span onclick="rate(2)">☆</span>
+<span onclick="rate(3)">☆</span>
+<span onclick="rate(4)">☆</span>
+<span onclick="rate(5)">☆</span>
+
+</div>
+
+<div id="ratingMessage" style="margin-top:10px;"></div>
+
+</div>
 </div>
 
 <div id="error" class="error">
@@ -203,7 +219,12 @@ document.getElementById("loading").style.display="none";
 document.getElementById("error").style.display="block";
 
 }
+function rate(stars){
 
+document.getElementById("ratingMessage").innerHTML =
+"شكراً لتقييمك ⭐ " + stars;
+
+}
 </script>
 
 </body>
