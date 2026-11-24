@@ -3,550 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>التحقق من أصالة المنتجات | روائح الحرمين</title>
+<title>التحقق من أصالة المنتج | روائح الحرمين</title>
 
 <style>
-
-
-
-\*{
-
+*{
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
-font-family:Tahoma,Arial,sans-serif;
-
+font-family:'Tahoma',sans-serif;
 }
-
-
 
 body{
-
-background:#f6f7f8;
-
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 padding:20px;
-
+color:#fff;
 }
 
-
-
-.container{
-
-max-width:900px;
-
-margin:auto;
-
-background:white;
-
-border-radius:20px;
-
-padding:40px;
-
-box-shadow:0 5px 20px rgba(0,0,0,.08);
-
+.card{
+width:100%;
+max-width:450px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:24px;
+padding:25px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.35);
 }
-
-
 
 .logo{
-
+width:180px;
+margin:0 auto 20px;
 display:block;
-
-margin:auto;
-
-width:160px;
-
-margin-bottom:20px;
-
 }
 
-
-
-.verify-box{
-
-background:#edf9f0;
-
-border:2px solid #cdeed8;
-
-border-radius:15px;
-
-padding:25px;
-
-text-align:center;
-
-margin-bottom:25px;
-
+.check{
+width:90px;
+height:90px;
+background:#16a34a;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:42px;
+margin:15px auto;
+box-shadow:0 0 25px rgba(34,197,94,.6);
 }
 
-
-
-.verify-title{
-
-font-size:34px;
-
-font-weight:bold;
-
-color:#0b8f48;
-
+.title{
+font-size:24px;
+font-weight:700;
+margin-bottom:15px;
 }
 
-
-
-.verify-sub{
-
-margin-top:10px;
-
-color:#777;
-
-font-size:18px;
-
-}
-
-
-
-table{
-
+.product-img{
 width:100%;
-
-border-collapse:collapse;
-
-margin-top:20px;
-
+border-radius:18px;
+margin:15px 0;
+display:none;
 }
 
-
-
-td{
-
-padding:15px;
-
-border:1px solid #e5e5e5;
-
+.info{
+background:rgba(255,255,255,.08);
+padding:12px;
+border-radius:12px;
+margin-top:10px;
+font-size:15px;
 }
-
-
 
 .label{
-
-background:#fafafa;
-
+color:#d4af37;
 font-weight:bold;
-
-width:35%;
-
 }
 
-
-
-.note{
-
-margin-top:25px;
-
-padding:20px;
-
-background:#fafafa;
-
+.warning{
+margin-top:18px;
+padding:12px;
 border-radius:12px;
-
-text-align:center;
-
-line-height:2;
-
-color:#555;
-
+background:#dc2626;
+display:none;
 }
 
-
-
-.footer{
-
-margin-top:25px;
-
-text-align:center;
-
-color:#888;
-
+.error{
+display:none;
+font-size:20px;
+color:#ff6b6b;
+padding:25px;
 }
 
-
-
-.status-ok{
-
-color:#0b8f48;
-
-font-weight:bold;
-
+.loading{
+font-size:18px;
 }
-
-
-
-.status-bad{
-
-color:#d32f2f;
-
-font-weight:bold;
-
-}
-
-
-
-
+</style>
 </head>
+
 <body>
 
-<div class="container">
+<div class="card">
 
-<h1 style="
-text-align:center;
-color:#0f5132;
-font-size:38px;
-margin-bottom:10px;
-">
-روائح الحرمين
-</h1>
+<img src="logo.rwaeh.png" class="logo">
 
-<p style="
-text-align:center;
-color:#777;
-margin-bottom:25px;
-font-size:18px;
-">
-التحقق من أصالة منتجات 111 روائح الحرمين
-</p>
-
-<div class="verify-box">
-
-<div id="verifyTitle" class="verify-title">
+<div id="loading" class="loading">
 جاري التحقق...
-<br>
-Verifying Product...
 </div>
 
-<div class="verify-sub">
-التحقق من أصالة منتجات روائح الحرمين
-<br>
-Rwaeh Al Haramain Product Verification
+<div id="content" style="display:none;">
+
+<div class="check">✓</div>
+
+<div class="title">
+تم التحقق من أصالة المنتج
 </div>
 
+<img id="productImage" class="product-img">
+
+<div class="info">
+<span class="label">المنتج:</span>
+<span id="product"></span>
 </div>
 
-<table>
+<div class="info">
+<span class="label">رقم الدفعة:</span>
+<span id="batch"></span>
+</div>
 
-<tr>
-<td class="label">
-اسم المنتج<br>
-Product Name
-</td>
-<td id="productName">-</td>
-</tr>
+<div class="info">
+<span class="label">الحالة:</span>
+<span id="status"></span>
+</div>
 
-<tr>
-<td class="label">
-رقم التحقق<br>
-Verification Code
-</td>
-<td id="productCode">-</td>
-</tr>
+<div class="info">
+<span class="label">عدد مرات التقييم:</span>
+<span id="scanCount"></span>
+</div>
 
-<tr>
-<td class="label">
-رقم التشغيلة<br>
-Batch Number
-</td>
-<td id="batch">-</td>
-</tr>
+<div class="info" style="margin-top:15px;">
 
-<tr>
-<td class="label">
-الحالة<br>
-Status
-</td>
-<td id="statusText">-</td>
-</tr>
+<span class="label">قيّم المنتج:</span>
 
-<tr>
-<td class="label">
-تاريخ التحقق<br>
-Verification Date
-</td>
-<td id="verifyDate">-</td>
-</tr>
+<div id="rating" style="font-size:32px;margin-top:10px;">
 
-<div class="note">
-
-تم التحقق من هذا المنتج عبر النظام الرسمي لشركة روائح الحرمين.
-
-<br><br>
-
-This product has been verified through the official Rwaeh Al Haramain verification system.
-
-<br><br>
-
-يرجى التأكد من مطابقة رقم التحقق الموجود على العبوة مع الرقم الظاهر في هذه الصفحة.
-
-<br><br>
-
-Please verify that the code printed on the package matches the code displayed on this page.
+<span onclick="rate(1)">☆</span>
+<span onclick="rate(2)">☆</span>
+<span onclick="rate(3)">☆</span>
+<span onclick="rate(4)">☆</span>
+<span onclick="rate(5)">☆</span>
 
 </div>
 
-<div style="text-align:center;margin-top:25px;">
-
-<a href="https://rwaeh.com"
-style="
-display:inline-block;
-background:#0f5132;
-color:white;
-padding:16px 35px;
-border-radius:10px;
-text-decoration:none;
-font-size:18px;
-font-weight:bold;
-box-shadow:0 4px 12px rgba(0,0,0,.15);
-">
-
-🏠 زيارة الموقع الرسمي
-<br>
-Official Website
-
-</a>
-
+<div id="ratingMessage" style="margin-top:10px;"></div>
+<div id="ratingCount" style="margin-top:10px;color:#d4af37;">
+متوسط القيمة: 29.99 ريال سعودي
 </div>
 
-<div class="footer">
-
-<br>
-
-روائح الحرمين<br>
-RWAEH.COM
-
+</div>
 </div>
 
+<div id="error" class="error">
+❌ المنتج غير موجود أو الكود غير صحيح
 </div>
 
 </div>
 
 <script>
 
+const API_URL = "https://script.google.com/macros/s/AKfycbym0t0CHSDg4AXoXlZjjZkfF1PmEMl59Qvw2ERohGJ0BzJ0vazpQfQgG8uJk9EcHuaJNA/exec";
 
+const id = new URLSearchParams(window.location.search).get("id");
 
-const SHEET\_CSV =
+if(id){
 
-"https://docs.google.com/spreadsheets/d/1XoncKTIGuDLASZ5pH4dcea0OveKThyWuU4V3ShgUCug/export?format=csv";
+fetch(API_URL + "?id=" + encodeURIComponent(id))
+.then(response => response.json())
+.then(data=>{
 
+document.getElementById("loading").style.display="none";
 
+if(data.found){
 
-const params = new URLSearchParams(window.location.search);
+document.getElementById("content").style.display="block";
 
-const id = params.get("id");
+document.getElementById("product").textContent=data.product;
+document.getElementById("batch").textContent=data.batch;
+document.getElementById("status").textContent=data.status;
+document.getElementById("scanCount").textContent=data.scanCount;
 
+if(data.imageUrl){
 
-
-document.getElementById("productCode").innerText =
-
-id || "-";
-
-
-
-document.getElementById("verifyDate").innerText =
-
-new Date().toLocaleString('ar-SA');
-
-
-
-async function verifyCode(){
-
-
-
-if(!id){
-
-showInvalid();
-
-return;
+const img=document.getElementById("productImage");
+img.src=data.imageUrl;
+img.style.display="block";
 
 }
 
+if(data.warning){
+document.getElementById("warning").style.display="block";
+}
 
+}else{
 
-try{
-
-
-
-const response = await fetch(SHEET\_CSV);
-
-const csv = await response.text();
-
-
-
-const rows = csv.split("\\n");
-
-
-
-let found = null;
-
-
-
-for(let i=1;i<rows.length;i++){
-
-
-
-let cols = rows\[i]
-
-.replace(/\\r/g,"")
-
-.replace(/"/g,"")
-
-.split(",");
-
-
-
-if(cols.length >= 4){
-
-
-
-let code = cols\[0].trim();
-
-
-
-if(code === id){
-
-
-
-found = cols;
-
-break;
-
-
+document.getElementById("error").style.display="block";
 
 }
 
+});
 
+}else{
 
-}
-
-
-
-}
-
-
-
-if(found){
-
-
-
-let product = found\[1].trim();
-
-let batch = found\[2].trim();
-
-let status = found\[3].trim();
-
-
-
-document.getElementById("productName").innerText =
-
-product;
-
-
-
-document.getElementById("batch").innerText =
-
-batch;
-
-
-
-if(status.toLowerCase() === "active"){
-
-
-
-document.getElementById("verifyTitle").innerHTML =
-
-"✅ شهادة أصالة المنتج<br>Product Authenticity Certificate";
-
-
-
-document.getElementById("statusText").innerHTML =
-
-'<span class="status-ok">نشط ومعتمد<br>Active \& Certified</span>';
-
-
+document.getElementById("loading").style.display="none";
+document.getElementById("error").style.display="block";
 
 }
+function rate(stars){
 
-else{
+const productName =
+document.getElementById("product").textContent;
 
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+product: productName,
+rating: stars
+})
+})
+.then(response => response.json())
+.then(data => {
 
-
-document.getElementById("verifyTitle").innerHTML =
-
-"⚠️ تم إيقاف هذا الكود<br>Verification Code Blocked";
-
-
-
-document.getElementById("statusText").innerHTML =
-
-'<span class="status-bad">موقوف<br>Blocked</span>';
-
-
-
-}
-
-
+document.getElementById("ratingMessage").innerHTML =
+"شكراً لتقييمك ⭐ " + stars;
+});
 
 }
-
-else{
-
-
-
-showInvalid();
-
-
-
-}
-
-
-
-}
-
-catch(error){
-
-
-
-document.getElementById("verifyTitle").innerHTML =
-
-"⚠️ تعذر الاتصال بقاعدة البيانات";
-
-
-
-}
-
-
-
-}
-
-
-
-function showInvalid(){
-
-document.getElementById("verifyTitle").innerHTML =
-"❌ المنتج غير أصلي أو الكود غير موجود";
-
-document.getElementById("statusText").innerHTML =
-'<span class="status-bad">غير صالح</span>';
-
-document.getElementById("productName").innerText = "-";
-
-document.getElementById("batch").innerText = "-";
-
-}
-
-
-verifyCode();
 
 </script>
+
 </body>
 </html>
